@@ -1,1 +1,107 @@
+<Introduction>
+
+This is a disk image(container) browser/editor/writer for the RC2014. 
+
+<Operations>
+
+Open an image file (.CPM) or container file (.IMG) from the menu or the toolstrip button.
+On the left the drive is displayed on which this image will be mounted, on the right all files in this image will be displayed. 
+
+If it is the first image a question will be asked if this image contains a boot 'sector', if answered with Yes the first 16K bytes from this image will be treated as a boot region.
+You can see the content of the boot region with the button 'BOOT' at the top of the screen.
+
+Remember to set the right amount of directory entries on the right, usually 512 but I also came across images with 2048 entries.
+
+You can also create a new image file with 'File->New'. 
+
+Inserting file(s) into an image with 'File->Insert'.
+Multiple files can be selected in de dialog screen.
+If the image in which you insert a file is 'A' and the file is a binary (.bin) or an Intel Hex (.hex) this will be treated as an insert for the boot sector (the hex will be converted to bin).
+Additional entries for the boot sector can be made, they will be put after the last entry (if free space allows).
+
+Deleting files from an image can be accomplished with pressing the 'Delete' button.
+The current selected file (in the right window) in this image will be deleted.
+
+Closing an (image) file can be done with 'File->Close'.
+Remember drive 'P' if you have this, this is a 2MB drive that will now be drive 'O'.
+If you add another drive now there will be problems ;-)
+ 
+You can save the current image file with 'File->Save'.
+
+You can extract and save all files in an image with 'File->Save Files'.
+They will be put in a seperate folder.
+Remember that if you have 2 files with the same name/type in an image, the files will be overwritten.
+
+You can save the current container with 'File->Save Container'.
+An external tool can then be used to write this container to a Compact Flash Device.
+
+You can read an (image)container direct from a CF card with 'File->Read RAW image from CF'.
+
+You can also save the (image)container direct with 'File->Save RAW image to CF'.
+CAREFULL: WITH THIS COMMAND YOU OVERWRITE ALL DATA ON THE SELECTED REMOTE DRIVE (COMPACT FLASH, USB DRIVE, REMOTE HARDDISK ETC.)
+*** USE WITH CAUTION ***
+
+<Menu>
+
+`File->New` 
+
+Create an empty image file
+
+`File->Open` 
+
+Load an image file (.cpm) or a container file holding images (.img)
+
+`File->Close` 
+
+Close the current image file
+
+`File->Save` 
+
+Save the current image file
+
+`File->Save As`
+
+Save the current image file under a given name
+ 
+`File->Save Files`
+
+Save the files contained in the current image file
+
+`File->Insert`
+
+Insert files in the current image file
+
+`File->Save Container` 
+
+Save the container file (with images)
+
+`File->Save As`
+
+Save the container file (with images) under a given name
+
+`File->Read RAW image from CF` 
+
+Read the image from a remote device (Compact Flash)
+
+`File->Save RAW image to CF` 
+
+Save the image to a remote device (Compact Flash)
+
+`File->Quit`
+
+Quit program
+
+`Help->Manual` 
+
+Show this manual
+
+`Help->About`
+
+Show program info
+
+-----------------------------------------------------
+Please report any bugs you encounter,
+Dirk
+info@fornext.nl 
+
 
