@@ -5,7 +5,7 @@ This is a disk image(container) browser/editor/writer for the RC2014.
 Disk images for the CP/M system can be read/altered and written again to a Compact Flash card.
 
 I found it to be better to work with 256MB CF cards.
-The 128MB cards I had where from china and in fact less then 128MB so it booted ok but produced problems accessing the files on the RC2014.
+The 128MB cards I had were from china and in fact less then 128MB so it booted ok but produced problems accessing the files on the RC2014.
 
 Remember to start Visual Studio in Admin mode if working on the program yourself.
 This is because the program needs access to certain disk routines in the kernel32.dll.
