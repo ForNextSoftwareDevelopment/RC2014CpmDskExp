@@ -115,6 +115,7 @@ namespace CPM
                 if (dialogResult == DialogResult.Yes)
                 {
                     boot = true;
+                    boot_index = BOOTSIZE;
                 }
             }
 
