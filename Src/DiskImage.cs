@@ -367,7 +367,7 @@ namespace CPM
                 // Check first block available (depends on max_dir, before that block are file entries) 
                 int blocks_needed_for_dir = max_dir * 32 / BLOCKSIZE;
                 if (max_dir * 32 % BLOCKSIZE != 0) blocks_needed_for_dir++;
-                int start_block = blocks_needed_for_dir;
+                int start_block = blocks_needed_for_dir + (offset / BLOCKSIZE); 
 
                 // Check free blocks 
                 bool enough = false;
