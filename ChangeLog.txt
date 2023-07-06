@@ -1,7 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0] - 2023-06-02
+## [1.0] - 2023-04-24
 ### Initial Release
 https://github.com/ForNextSoftwareDevelopment/RC2014CpmDskExp
 
+## [1.1] - 2023-07-06
+### Debug
+- Files were put in the wrong place on the A drive if it was marked as a boot drive
