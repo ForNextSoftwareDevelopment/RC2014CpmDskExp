@@ -256,7 +256,11 @@ namespace CPM
         public byte[] GetFileData(int index)
         {
             try
-            { 
+            {
+                // If this is a boot drive the first 0x4000 bytes are for the system files
+                int offset = 0;
+                if (boot) offset = BOOTSIZE;
+
                 byte[] data = new byte[0];
 
                 FILE file = files[index];
@@ -294,8 +298,8 @@ namespace CPM
                                 if ((file_found.block_pointers[block_pointer_index] != 0) || (file_found.block_pointers[block_pointer_index + 1] != 0))
                                 {
                                     // Copy bytes 
-                                    int image_ptr;
-                                    image_ptr = file_found.block_pointers[block_pointer_index] * BLOCKSIZE;
+                                    int image_ptr = offset;
+                                    image_ptr += file_found.block_pointers[block_pointer_index] * BLOCKSIZE;
                                     image_ptr += file_found.block_pointers[block_pointer_index + 1] * BLOCKSIZE * 256;
 
                                     int bytes_copied = 0;
@@ -367,12 +371,12 @@ namespace CPM
                 // Check first block available (depends on max_dir, before that block are file entries) 
                 int blocks_needed_for_dir = max_dir * 32 / BLOCKSIZE;
                 if (max_dir * 32 % BLOCKSIZE != 0) blocks_needed_for_dir++;
-                int start_block = blocks_needed_for_dir + (offset / BLOCKSIZE); 
+                int start_block = blocks_needed_for_dir; 
 
                 // Check free blocks 
                 bool enough = false;
 
-                for (int block = start_block; !enough && (block < (bytes.Length / 4096) + 1); block++)
+                for (int block = start_block; !enough && (block <= (bytes.Length - blocks_needed_for_dir * 4096 - offset)); block++)
                 {
                     bool free = true;
                     foreach (FILE file in files)
@@ -441,7 +445,7 @@ namespace CPM
                             // Copy a block of data from the file to the image bytes
                             for (int i = 0; (i < BLOCKSIZE) && (data_written < data.Length); i++)
                             {
-                                bytes[freeBlocks[freeBlocks_index] * BLOCKSIZE + i] = data[data_written++];
+                                bytes[offset + freeBlocks[freeBlocks_index] * BLOCKSIZE + i] = data[data_written++];
                             }
 
                             // Next free block
@@ -461,8 +465,15 @@ namespace CPM
                         record_count = 0x80;
                     } else
                     {
-                        record_count = (byte)(data_written / RECORDSIZE);
-                        if (block_pointers_used > 3) record_count = (byte)((data_written - 0x4000) / RECORDSIZE);
+                        if (block_pointers_used <= 4)
+                        {
+                            record_count = (byte)(data_written / RECORDSIZE);
+                            if (data_written % RECORDSIZE != 0) record_count++;
+                        } else
+                        {
+                            record_count = (byte)((data_written - 0x4000) / RECORDSIZE);
+                            if ((data_written - 0x4000) % RECORDSIZE != 0) record_count++;
+                        }
                     }
 
                     // Create new file entry
