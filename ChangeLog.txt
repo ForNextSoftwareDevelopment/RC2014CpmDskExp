@@ -8,3 +8,7 @@ https://github.com/ForNextSoftwareDevelopment/RC2014CpmDskExp
 ## [1.1] - 2023-07-06
 ### Debug
 - Files were put in the wrong place on the A drive if it was marked as a boot drive
+
+## [1.2] - 2023-08-10
+### Debug
+- Deleting files was not written to (image)memory
