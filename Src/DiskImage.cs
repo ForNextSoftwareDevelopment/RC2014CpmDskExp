@@ -336,12 +336,40 @@ namespace CPM
             {
                 FILE file = files[index];
 
+                // If this is a boot drive the first 0x4000 bytes are for the system files
+                int offset = 0;
+                if (boot) offset = BOOTSIZE;
+
                 for (int i=0; i < files.Length; i++)
                 {
                     if ((files[i].file_name == file.file_name) && (files[i].file_type == file.file_type) && (files[i].user_number == file.user_number))
                     {
                         // Create a new file entry (user number 0xE5)
                         files[i] = new FILE(0xE5, null, null, 0, 0, 0, null);
+
+                        // Set user number to E5 (empty)
+                        bytes[offset + (i * 32)] = 0xE5;
+
+                        // Delete name/extension from memory
+                        for (int j = 0; j < 11; j++)
+                        {
+                            bytes[offset + 1 + (i * 32) + j] = (byte)' ';
+                        }
+
+                        // Delete file extension low
+                        bytes[offset + 12 + (i * 32)] = 0;
+
+                        // Delete file extension high
+                        bytes[offset + 14 + (i * 32)] = 0;
+
+                        // Delete number of records (each 128 bytes)
+                        bytes[offset + 15 + (i * 32)] = 0;
+
+                        // Delete block pointers
+                        for (int j = 0; j < 16; j++)
+                        {
+                            bytes[offset + 16 + j + (i * 32)] = 0;
+                        }
                     }
                 }
             } catch (Exception exception)
@@ -514,7 +542,7 @@ namespace CPM
                             // Fill file extension high
                             bytes[offset + 14 + (i * 32)] = file.extend_counter_high;
 
-                            // Fillt number of records (each 128 bytes)
+                            // Fill number of records (each 128 bytes)
                             bytes[offset + 15 + (i * 32)] = file.record_count;
 
                             // Fill block pointers
